@@ -1,0 +1,9 @@
+<resources>
+    <string name="title_activity_list">ListActivity</string>
+    <string name="tab_text_photo">Photos</string>
+    <string name="tab_text_video">Videos</string>
+    <string name="tab_text_app">Apps</string>
+    <string name="tab_text_other">Other</string>
+    <string name="app_name">File Browser</string>
+    <string name="tab_text_music">Audio</string>
+</resources>
