@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 class PageViewModel : ViewModel() {
+    var endReached = false
     var displayableData: ArrayList<ListItem> = ArrayList()
     var loadedIndex = 0
     var updatedContentSize = 0
@@ -41,6 +42,9 @@ class PageViewModel : ViewModel() {
             when (fileType) {
                 FileType.App -> getApps(context, list)
                 else -> getFiles(loadedIndex, fileType, context, list)
+            }
+            if(list.size == 0){
+                endReached = true
             }
 
             _loading.postValue(false)
@@ -108,11 +112,11 @@ class PageViewModel : ViewModel() {
 
     @ExperimentalCoroutinesApi
     fun updateLastVisibleItemPosition(fileType: FileType, context: Context, lastVisibleItemPosition: Int) {
-        if (fileType == FileType.App) {
+        if (fileType == FileType.App && !endReached) {
             if (loadedIndex == 0) {
                 loadDisplayables(fileType, context)
             }
-        } else if (lastVisibleItemPosition > loadedIndex - NEXT_ITEM_CALL_THRESHOLD) {
+        } else if (lastVisibleItemPosition > loadedIndex - NEXT_ITEM_CALL_THRESHOLD && !endReached) {
             loadDisplayables(fileType, context)
         }
     }
