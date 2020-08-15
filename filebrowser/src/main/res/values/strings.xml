@@ -6,4 +6,15 @@
     <string name="tab_text_other">Other</string>
     <string name="app_name">File Browser</string>
     <string name="tab_text_music">Audio</string>
+    <string name="file_browser">File Browser</string>
+    <plurals name="file_selection_title">
+        <item quantity="one">%d file selected</item>
+        <item quantity="other">%d files selected</item>
+    </plurals>
+
+    <plurals name="send_files">
+        <item quantity="one">Send %d File</item>
+        <item quantity="other">Send %d Files</item>
+    </plurals>
+    send_files
 </resources>

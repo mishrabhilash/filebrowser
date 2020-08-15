@@ -1,14 +1,19 @@
 package com.abhilashmishra.filebrowser.ui.main.adapter
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.FileProvider
 import com.abhilashmishra.filebrowser.R
 import com.abhilashmishra.filebrowser.ui.main.model.Displayable
 import com.abhilashmishra.filebrowser.ui.main.model.ListItem
 import com.bumptech.glide.Glide
+import java.io.File
 
-class ImageFileViewHolder(itemView: View) : BaseListViewHolder(itemView) {
+class VideoFileViewHolder(itemView: View) : BaseListViewHolder(itemView) {
 
     private val imageView: ImageView by lazy {
         itemView.findViewById<ImageView>(R.id.imageBitmap)
@@ -20,6 +25,10 @@ class ImageFileViewHolder(itemView: View) : BaseListViewHolder(itemView) {
 
     private val checkedImageBackground: View by lazy {
         itemView.findViewById<View>(R.id.checkedImageBackground)
+    }
+
+    private val playButton: View by lazy {
+        itemView.findViewById<View>(R.id.playButton)
     }
 
     override fun initView(listItem: ListItem, position: Int) {
@@ -39,6 +48,7 @@ class ImageFileViewHolder(itemView: View) : BaseListViewHolder(itemView) {
         }
         if (displayable.thumbnail == null) {
             Glide.with(imageView.context)
+                .asBitmap()
                 .load(displayable.path)
                 .into(imageView)
         }
@@ -47,6 +57,26 @@ class ImageFileViewHolder(itemView: View) : BaseListViewHolder(itemView) {
             displayable.onClickAction.invoke(displayable)
             handleCheckVisibility(displayable)
         }
+
+        playButton.setOnClickListener {
+            val myMime = MimeTypeMap.getSingleton()
+            val mimeType = myMime.getMimeTypeFromExtension(displayable.name.substringAfterLast("."))
+            val sharedUri = FileProvider.getUriForFile(
+                itemView.context,
+                "${itemView.context.applicationInfo.packageName}.fileprovider",
+                File(displayable.path)
+            )
+            val newIntent = Intent(Intent.ACTION_VIEW)
+            newIntent.setDataAndType(sharedUri, mimeType)
+            newIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+            try {
+                itemView.context.startActivity(newIntent)
+            } catch (e: ActivityNotFoundException) {
+
+            }
+        }
+
+
         handleCheckVisibility(displayable)
     }
 
