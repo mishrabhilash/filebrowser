@@ -27,6 +27,10 @@ class ListActivity : AppCompatActivity(), ContainerInterface {
         findViewById<View>(R.id.sendContainer)
     }
 
+    val backButton: View by lazy {
+        findViewById<View>(R.id.backButton)
+    }
+
     val buttonText: TextView by lazy {
         findViewById<TextView>(R.id.sendText)
     }
@@ -48,6 +52,10 @@ class ListActivity : AppCompatActivity(), ContainerInterface {
 
         button.setOnClickListener {
             sendResult()
+        }
+
+        backButton.setOnClickListener {
+            onBackPressed()
         }
     }
 
