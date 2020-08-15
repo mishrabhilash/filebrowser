@@ -46,8 +46,8 @@ class ListActivity : AppCompatActivity(), ContainerInterface {
 
         button.visibility = GONE
 
-        button.setOnClickListener { view ->
-
+        button.setOnClickListener {
+            sendResult()
         }
     }
 
