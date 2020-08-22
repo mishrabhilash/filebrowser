@@ -25,6 +25,11 @@ class ImageFileAdapter(val displayableList: ArrayList<ListItem>) : RecyclerView.
             VideoFileViewHolder(itemView)
         }
 
+        FileType.App.ordinal -> {
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_app_vertical, parent, false)
+            AppFileViewHolder(itemView)
+        }
+
         LoaderItem.LOADER_HORIZONTAL -> {
             val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_loader_horizontal, parent, false)
             LoaderHorizontalViewHolder(itemView)
