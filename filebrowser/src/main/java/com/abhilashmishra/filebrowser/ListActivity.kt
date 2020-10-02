@@ -9,6 +9,7 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
+import com.abhilashmishra.filebrowser.ui.main.FileType
 import com.abhilashmishra.filebrowser.ui.main.SectionsPagerAdapter
 import com.abhilashmishra.filebrowser.ui.main.model.Displayable
 import com.abhilashmishra.filebrowser.ui.main.model.Sendable
@@ -21,6 +22,8 @@ class ListActivity : AppCompatActivity(), ContainerInterface {
         const val KEY_SELECTED_LIST = "key.selected.list"
         const val KEY_SELECTED_LIST_TYPE = "key.selected.list.type"
         const val KEY_SELECTED_LIST_TYPE_FILEPATH = "key.selected.list.type.filepath"
+        const val KEY_TAB_TYPE_LIST = "key.tab.type.list"
+        const val KEY_TAB_TITLE_LIST = "key.tab.title.list"
     }
 
     val button: View by lazy {
@@ -42,7 +45,16 @@ class ListActivity : AppCompatActivity(), ContainerInterface {
         setContentView(R.layout.activity_list)
 
         titleTextView.text = resources.getString(R.string.file_browser)
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+
+        val tabTitleListFromIntent = intent.extras?.getIntegerArrayList(KEY_TAB_TITLE_LIST)
+        val tabTypeListFromIntent = intent.extras?.getParcelableArrayList<FileType>(KEY_TAB_TYPE_LIST)
+
+        val sectionsPagerAdapter = if (tabTypeListFromIntent != null && tabTitleListFromIntent != null) {
+            SectionsPagerAdapter(this, supportFragmentManager, tabTypeListFromIntent.toTypedArray(), tabTitleListFromIntent.toTypedArray())
+        } else {
+            SectionsPagerAdapter(this, supportFragmentManager)
+        }
+
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)

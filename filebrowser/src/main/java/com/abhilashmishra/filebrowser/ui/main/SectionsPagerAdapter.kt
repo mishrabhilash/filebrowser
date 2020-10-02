@@ -26,21 +26,24 @@ private val TAB_TYPES = arrayOf(
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class SectionsPagerAdapter(private val context: Context,
+                           fm: FragmentManager,
+                           val tabTypeList: Array<FileType> = TAB_TYPES,
+                           val tabTitleResource: Array<Int> = TAB_TITLES) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(TAB_TYPES[position])
+        return PlaceholderFragment.newInstance(tabTypeList[position])
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return context.resources.getString(TAB_TITLES[position])
+        return context.resources.getString(tabTitleResource[position])
     }
 
     override fun getCount(): Int {
         // Show 2 total pages.
-        return TAB_TYPES.size
+        return tabTypeList.size
     }
 
 
